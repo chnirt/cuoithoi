@@ -1,0 +1,47 @@
+{
+  "couple": {
+    "bride": "Cô Dâu",
+    "groom": "Chú Rể"
+  },
+  "event": {
+    "date": "18/10/2025",
+    "datetime": "2025-10-18T10:00:00+07:00",
+    "time": "11:00 AM",
+    "venue": "Nhà hàng Maxim's II",
+    "address": "36 Nguyễn Thái Học, Phường 7, Vũng Tàu, Bà Rịa - Vũng Tàu",
+    "mapUrl": "https://maps.google.com/?q=Nhà+Hàng+Maxim's+II+Vũng+Tàu",
+    "calendarUrl": "https://calendar.google.com/calendar/u/0/r/eventedit?text=Wedding+of+C%C3%B4+D%C3%A2u+%26+Ch%C3%BA+R%E1%BB%83&dates=20251018T100000/20251018T180000&location=Nh%C3%A0+H%C3%A0ng+Maxim's+II+V%C5%A9ng+T%C3%A0u"
+  },
+  "gallery": [
+    {
+      "id": 1,
+      "src": "/placeholder.svg?height=400&width=400",
+      "alt": "Engagement photo"
+    },
+    {
+      "id": 2,
+      "src": "/placeholder.svg?height=400&width=400",
+      "alt": "Pre-wedding photoshoot"
+    },
+    {
+      "id": 3,
+      "src": "/placeholder.svg?height=400&width=400",
+      "alt": "Romantic moment"
+    },
+    {
+      "id": 4,
+      "src": "/placeholder.svg?height=400&width=400",
+      "alt": "Wedding day happiness"
+    },
+    {
+      "id": 5,
+      "src": "/placeholder.svg?height=400&width=400",
+      "alt": "Celebration moment"
+    },
+    {
+      "id": 6,
+      "src": "/placeholder.svg?height=400&width=400",
+      "alt": "Wedding portrait"
+    }
+  ]
+}
