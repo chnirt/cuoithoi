@@ -8,7 +8,7 @@ import {
 } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
-import { WeddingProvider } from "@/context/WeddingContext";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -79,9 +79,8 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${playfairDisplay.variable} ${inter.variable} ${montserrat.variable} antialiased`}
       >
-        <ClerkProvider>
-          <WeddingProvider>{children}</WeddingProvider>
-        </ClerkProvider>
+        <ClerkProvider>{children}</ClerkProvider>
+        <Toaster />
       </body>
     </html>
   );

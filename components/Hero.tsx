@@ -1,56 +1,49 @@
 "use client";
 
 import { motion } from "framer-motion";
+import DecorativeLine from "./DecorativeLine";
+import { defaultWeddingData } from "@/mock/defaultWeddingData";
+import type { Couple, EventInfo } from "@/types/wedding";
+import { fadeInUp, fadeInScale } from "@/lib/animations";
 
-interface Couple {
-  bride?: string | null;
-  groom?: string | null;
-}
-
-interface EventInfo {
-  date?: string | null;
-}
-
-export default function Hero({
-  couple,
-  event,
-}: {
+interface HeroProps {
   couple?: Couple;
   event?: EventInfo;
-}) {
+}
+
+export default function Hero({ couple, event }: HeroProps) {
   const bride = (couple?.bride || "Cô Dâu").toUpperCase();
   const groom = (couple?.groom || "Chú Rể").toUpperCase();
   const date = event?.date || "Ngày trọng đại";
 
   return (
     <motion.section
-      initial={{ opacity: 0, y: 12 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8 }}
-      viewport={{ once: true }}
-      className="py-24 md:py-36 bg-gradient-to-b from-neutral-50 to-white relative overflow-hidden"
+      {...fadeInUp(0)}
+      className="py-20 sm:py-24 md:py-36 bg-gradient-to-b from-neutral-50 to-white relative overflow-hidden"
     >
-      {/* Decorative background */}
+      {/* Background Decorations */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-24 left-12 w-32 h-32 border border-neutral-200 rounded-full opacity-20" />
         <div className="absolute bottom-24 right-12 w-24 h-24 border border-neutral-200 rounded-full opacity-20" />
         <div className="absolute top-1/2 left-1/4 w-16 h-16 border border-neutral-200 rounded-full opacity-10" />
       </div>
 
+      {/* Content */}
       <div className="max-w-4xl mx-auto px-4 text-center relative z-10">
-        {/* Heading */}
+        {/* Intro text */}
         <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          viewport={{ once: true }}
-          className="text-neutral-500 text-xs uppercase tracking-[0.3em] mb-10 font-light"
+          {...fadeInUp(0.1)}
+          className="text-neutral-500 text-xs sm:text-sm uppercase tracking-[0.25em] mb-8 sm:mb-10 font-light"
           style={{ fontFamily: "Georgia, serif" }}
         >
-          Mời bạn tham dự lễ cưới của chúng mình
+          {defaultWeddingData.content.invitation}
         </motion.p>
 
-        <div className="flex justify-center items-center gap-2 sm:gap-3 flex-wrap px-2">
+        {/* Couple names */}
+        <motion.div
+          {...fadeInScale(0.15)}
+          className="flex justify-center items-center gap-2 sm:gap-3 flex-wrap px-2"
+        >
           <motion.h1
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -84,42 +77,26 @@ export default function Hero({
           >
             {groom}
           </motion.h1>
-        </div>
+        </motion.div>
 
         {/* Decorative Line */}
-        <motion.div
-          initial={{ opacity: 0, scaleX: 0 }}
-          whileInView={{ opacity: 1, scaleX: 1 }}
-          transition={{ duration: 1, delay: 0.3 }}
-          viewport={{ once: true }}
-          className="flex items-center justify-center mb-8 mt-8"
-        >
-          <div className="w-8 h-px bg-neutral-300" />
-          <div className="mx-4 w-1 h-1 bg-neutral-400 rounded-full" />
-          <div className="w-16 h-px bg-gradient-to-r from-neutral-300 via-neutral-400 to-neutral-300" />
-          <div className="mx-4 w-1 h-1 bg-neutral-400 rounded-full" />
-          <div className="w-8 h-px bg-neutral-300" />
+        <motion.div {...fadeInUp(0.3)}>
+          <DecorativeLine />
         </motion.div>
 
         {/* Wedding Date */}
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          viewport={{ once: true }}
-          className="space-y-2"
-        >
+        <motion.div {...fadeInUp(0.4)} className="space-y-2">
           <p
-            className="text-lg md:text-xl text-neutral-700 font-light"
-            style={{ fontFamily: "Georgia, serif" }}
+            className="text-base sm:text-lg md:text-xl text-neutral-700 font-light"
+            style={{ fontFamily: "Georgia, serif", lineHeight: 1.4 }}
           >
             {date}
           </p>
           <p
-            className="text-xs md:text-sm text-neutral-500 tracking-wide font-light"
-            style={{ fontFamily: "Georgia, serif" }}
+            className="text-xs sm:text-sm md:text-base text-neutral-500 tracking-wide font-light"
+            style={{ fontFamily: "Georgia, serif", lineHeight: 1.5 }}
           >
-            Chúng mình rất mong được gặp bạn!
+            {defaultWeddingData.content.invitationSubtitle}
           </p>
         </motion.div>
       </div>

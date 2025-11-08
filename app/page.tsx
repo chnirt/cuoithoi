@@ -1,35 +1,17 @@
 "use client";
 import Link from "next/link";
-import { useWeddingData } from "@/context/WeddingContext";
-import Countdown from "@/components/Countdown";
-import Hero from "@/components/Hero";
-import InvitationText from "@/components/InvitationText";
-import Gallery from "@/components/Gallery";
-import EventInfo from "@/components/EventInfo";
-import RSVPForm from "@/components/RSVPForm";
-import Footer from "@/components/Footer";
+import WeddingPage from "@/components/WeddingPage";
+import { defaultWeddingData } from "@/mock/defaultWeddingData";
 
 export default function Home() {
-  const { weddingData: contextData } = useWeddingData();
-  const couple = contextData?.couple;
-  const event = contextData?.event;
-  const gallery = contextData?.gallery;
+  const data = defaultWeddingData;
+  const couple = data.couple;
+  const event = data.event;
+  const gallery = data.gallery;
 
   return (
     <main className="min-h-screen bg-white text-gray-800">
-      <Countdown targetDate={event.datetime} />
-
-      <Hero couple={couple} event={event} />
-
-      <InvitationText />
-
-      <Gallery images={gallery} />
-
-      <EventInfo event={event} />
-
-      <RSVPForm />
-
-      <Footer />
+      <WeddingPage couple={couple} event={event} gallery={gallery} />
 
       <Link
         href="/editor"
