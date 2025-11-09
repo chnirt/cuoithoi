@@ -5,6 +5,8 @@ import DecorativeLine from "./DecorativeLine";
 import { defaultWeddingData } from "@/mock/defaultWeddingData";
 import type { Couple, EventInfo } from "@/types/wedding";
 import { fadeInUp, fadeInScale } from "@/lib/animations";
+import { format, parseISO } from "date-fns";
+import { vi } from "date-fns/locale";
 
 interface HeroProps {
   couple?: Couple;
@@ -14,7 +16,17 @@ interface HeroProps {
 export default function Hero({ couple, event }: HeroProps) {
   const bride = (couple?.bride || "Cô Dâu").toUpperCase();
   const groom = (couple?.groom || "Chú Rể").toUpperCase();
-  const date = event?.date || "Ngày trọng đại";
+  // const date = event?.date || "Ngày trọng đại";
+
+  let formattedDate = "Ngày trọng đại";
+  try {
+    if (event?.datetime) {
+      const eventDate = parseISO(event.datetime);
+      formattedDate = format(eventDate, "dd/MM/yyyy", { locale: vi });
+    }
+  } catch {
+    console.warn("Invalid date format:", event?.datetime);
+  }
 
   return (
     <motion.section
@@ -90,7 +102,7 @@ export default function Hero({ couple, event }: HeroProps) {
             className="text-base sm:text-lg md:text-xl text-neutral-700 font-light"
             style={{ fontFamily: "Georgia, serif", lineHeight: 1.4 }}
           >
-            {date}
+            {formattedDate}
           </p>
           <p
             className="text-xs sm:text-sm md:text-base text-neutral-500 tracking-wide font-light"

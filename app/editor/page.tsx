@@ -1,69 +1,60 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import EditorForm from "@/components/EditorForm";
 import PreviewPanel from "@/components/PreviewPanel";
 import { SignedIn, UserButton, useUser } from "@clerk/nextjs";
-import Lottie from "lottie-react";
 
-import loadingAnimation from "@/assets/lottie/loading.json";
 import { useForm } from "react-hook-form";
 import { Form } from "@/components/ui/form";
 import { defaultWeddingData } from "@/mock/defaultWeddingData";
 import { WeddingPageProps } from "@/types/wedding";
+import { fetchWeddingByUserId } from "@/lib/firestore/weddings";
+import LoadingOverlay from "@/components/LoadingOverlay";
+import ShareDialog from "@/components/ShareDialog";
 
 export default function EditorPage() {
-  const { isLoaded } = useUser();
-
-  console.log("🚀 ~ EditorPage ~ defaultWeddingData:", defaultWeddingData);
-
+  const { isLoaded, isSignedIn, user } = useUser();
   const form = useForm<WeddingPageProps>({
     defaultValues: defaultWeddingData,
     mode: "onBlur",
   });
 
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
   const [activeTab, setActiveTab] = useState<"editor" | "preview">("editor");
-  // const { weddingData, publishWedding, unpublishWedding } = useWeddingData();
+  const [slug, setSlug] = useState<string | null>(null);
 
-  // const handlePublish = () => {
-  //   const publishedId = publishWedding();
-  //   const shareUrl = `${window.location.origin}/share/${publishedId}`;
-  //   setToastMessage(`Đã xuất bản! Liên kết: ${shareUrl}`);
-  //   setShowToast(true);
-  //   setTimeout(() => setShowToast(false), 5000);
-  // };
+  useEffect(() => {
+    if (!isLoaded || !isSignedIn || !user?.id) return;
 
-  // const handleUnpublish = () => {
-  //   unpublishWedding();
-  //   setToastMessage("Đã hủy xuất bản");
-  //   setShowToast(true);
-  //   setTimeout(() => setShowToast(false), 3000);
-  // };
+    let cancelled = false;
 
-  // const handleCopyLink = () => {
-  //   if (weddingData.publishedId) {
-  //     const shareUrl = `${window.location.origin}/share/${weddingData.publishedId}`;
-  //     navigator.clipboard.writeText(shareUrl);
-  //     setToastMessage("Đã sao chép liên kết!");
-  //     setShowToast(true);
-  //     setTimeout(() => setShowToast(false), 3000);
-  //   }
-  // };
+    const fetchWedding = async () => {
+      try {
+        const data = await fetchWeddingByUserId(user.id);
+        if (!cancelled && data) {
+          form.reset(data);
+          if (data.slug) setSlug(data.slug);
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        if (!cancelled) setLoading(false); // chỉ setState sau async
+      }
+    };
+
+    fetchWedding();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [isLoaded, isSignedIn, user, form]);
 
   return (
     <div className="min-h-screen bg-neutral-100 relative">
       {/* Loading Overlay */}
-      <div
-        className={`absolute inset-0 flex items-center justify-center bg-white z-50 transition-opacity duration-300 ${
-          isLoaded ? "opacity-0 pointer-events-none" : "opacity-100"
-        }`}
-      >
-        <Lottie
-          animationData={loadingAnimation}
-          loop={true}
-          style={{ width: 200, height: 200 }}
-        />
-      </div>
+      <LoadingOverlay show={!isLoaded || loading || submitting} />
 
       <header className="bg-white border-b border-neutral-200 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 py-6 flex justify-between items-center">
@@ -87,29 +78,7 @@ export default function EditorPage() {
 
           {/* Buttons + User */}
           <div className="flex gap-3 items-center">
-            {/* {weddingData.published ? (
-              <>
-                <button
-                  onClick={handleCopyLink}
-                  className="px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 transition-colors"
-                >
-                  Sao Chép Liên Kết
-                </button>
-                <button
-                  onClick={handleUnpublish}
-                  className="px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700 transition-colors"
-                >
-                  Hủy Xuất Bản
-                </button>
-              </>
-            ) : (
-              <button
-                onClick={handlePublish}
-                className="px-4 py-2 bg-[#b9a27f] text-white rounded-lg text-sm font-medium hover:bg-[#a89370] transition-colors"
-              >
-                Xuất Bản
-              </button>
-            )} */}
+            {slug && <ShareDialog slug={slug} />}
 
             {/* User button */}
             <SignedIn>
@@ -130,7 +99,10 @@ export default function EditorPage() {
               } lg:block lg:bg-white lg:rounded-lg lg:shadow-sm lg:p-8 lg:overflow-y-auto`}
             >
               <div className="bg-white rounded-lg shadow-sm lg:bg-transparent lg:rounded-none lg:shadow-none lg:p-0">
-                <EditorForm />
+                <EditorForm
+                  onSubmittingChange={setSubmitting}
+                  onSaved={(slug) => setSlug(slug)}
+                />
               </div>
             </div>
 

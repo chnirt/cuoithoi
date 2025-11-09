@@ -9,7 +9,7 @@ import EventInfo from "./EventInfo";
 // import RSVPForm from "./RSVPForm";
 import Footer from "./Footer";
 
-export default function WeddingPage({
+export default function WeddingPageView({
   couple,
   event,
   gallery,

@@ -6,6 +6,7 @@ import { vi } from "date-fns/locale";
 import { motion } from "framer-motion";
 import DecorativeLine from "./DecorativeLine";
 import { fadeInUpVariant, staggerContainer } from "@/lib/animations";
+import { Button } from "./ui/button";
 
 export type EventInfoType = {
   date?: string | null;
@@ -24,7 +25,7 @@ interface EventInfoProps {
 export default function EventInfo({ event }: EventInfoProps) {
   if (!event) return null;
 
-  let formattedDate = event.date ?? "";
+  let formattedDate = "";
   try {
     if (event.datetime) {
       const eventDate = parseISO(event.datetime);
@@ -134,14 +135,18 @@ const SectionLabel = ({ label }: { label: string }) => (
 );
 
 const EventButton = ({ label, url }: { label: string; url: string }) => (
-  <motion.button
-    onClick={() => window.open(url, "_blank")}
+  <motion.div
     whileHover={{ scale: 1.03 }}
     whileTap={{ scale: 0.97 }}
-    className="px-8 py-4 border-2 border-[#8b7355] text-[#8b7355] rounded-lg font-light transition-all duration-300 
-               bg-transparent hover:bg-[#f8f6f3] hover:shadow-md ease-out"
-    style={{ fontFamily: "Georgia, serif" }}
+    className="w-full"
   >
-    {label}
-  </motion.button>
+    <Button
+      onClick={() => window.open(url, "_blank")}
+      variant="outline"
+      className="w-full font-light px-8 py-4 text-[#8b7355] hover:text-[#8b7355] border-[#8b7355] bg-transparent hover:bg-[#f8f6f3] hover:shadow-md"
+      style={{ fontFamily: "Georgia, serif" }}
+    >
+      {label}
+    </Button>
+  </motion.div>
 );

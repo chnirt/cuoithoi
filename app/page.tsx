@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import WeddingPage from "@/components/WeddingPage";
+import WeddingPageView from "@/components/WeddingPageView";
 import { defaultWeddingData } from "@/mock/defaultWeddingData";
 
 export default function Home() {
@@ -11,7 +11,7 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-white text-gray-800">
-      <WeddingPage couple={couple} event={event} gallery={gallery} />
+      <WeddingPageView couple={couple} event={event} gallery={gallery} />
 
       <Link
         href="/editor"

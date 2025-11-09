@@ -1,0 +1,19 @@
+// components/LoadingOverlay.tsx
+"use client";
+
+import Lottie from "lottie-react";
+import loadingAnimation from "@/assets/lottie/loading.json";
+
+interface LoadingOverlayProps {
+  show: boolean;
+}
+
+export default function LoadingOverlay({ show }: LoadingOverlayProps) {
+  if (!show) return null;
+
+  return (
+    <div className="absolute inset-0 flex items-center justify-center z-60 bg-white bg-opacity-70">
+      <Lottie animationData={loadingAnimation} loop className="w-40 h-40" />
+    </div>
+  );
+}

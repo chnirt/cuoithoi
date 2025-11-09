@@ -21,13 +21,37 @@ import { Calendar } from "@/components/ui/calendar";
 import { ChevronDownIcon } from "lucide-react";
 import { toast } from "sonner";
 import { WeddingPageProps } from "@/types/wedding";
+import { saveWedding } from "@/lib/firestore/weddings";
+import { useUser } from "@clerk/nextjs";
+import { motion } from "framer-motion";
+import { fadeInScale } from "@/lib/animations";
 
-export default function EditorForm() {
+interface EditorFormProps {
+  onSubmittingChange?: (submitting: boolean) => void;
+  onSaved?: (slug: string) => void;
+}
+
+export default function EditorForm({
+  onSubmittingChange,
+  onSaved,
+}: EditorFormProps) {
+  const { user } = useUser();
   const form = useFormContext<WeddingPageProps>();
 
-  const onSubmit = (values: WeddingPageProps) => {
-    console.log("🚀 ~ onSubmit ~ values:", values);
-    toast.success("Thông tin đã được cập nhật!");
+  const onSubmit = async (values: WeddingPageProps) => {
+    if (!user?.id) return;
+    try {
+      onSubmittingChange?.(true); // báo parent đang submit
+      const slug = await saveWedding({ ...values, userId: user.id });
+      toast.success("Thông tin đã được cập nhật!");
+      onSaved?.(slug);
+      return slug;
+    } catch (error) {
+      console.error("Error saving wedding:", error);
+      toast.error("Lưu thông tin thất bại!");
+    } finally {
+      onSubmittingChange?.(false); // báo parent xong submit
+    }
   };
 
   const handleReset = () => {
@@ -37,7 +61,8 @@ export default function EditorForm() {
 
   return (
     <Form {...form}>
-      <form
+      <motion.form
+        {...fadeInScale(0)}
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-8 max-w-3xl mx-auto p-6"
       >
@@ -114,7 +139,7 @@ export default function EditorForm() {
                     <FormControl>
                       <Button
                         variant="outline"
-                        className="w-full justify-between h-11 text-base"
+                        className="w-full justify-between h-11 text-base font-light"
                       >
                         {field.value
                           ? format(new Date(field.value), "dd/MM/yyyy")
@@ -260,7 +285,7 @@ export default function EditorForm() {
             Đặt Lại
           </Button>
         </div>
-      </form>
+      </motion.form>
     </Form>
   );
 }
