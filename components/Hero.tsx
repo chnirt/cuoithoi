@@ -28,6 +28,11 @@ export default function Hero({ couple, event }: HeroProps) {
     console.warn("Invalid date format:", event?.datetime);
   }
 
+  const brideWords = bride.split(" ");
+  const groomWords = groom.split(" ");
+
+  const isSingleLine = brideWords.length + groomWords.length <= 4; // 2 chữ mỗi tên → 1 hàng
+
   return (
     <motion.section
       {...fadeInUp(0)}
@@ -54,41 +59,84 @@ export default function Hero({ couple, event }: HeroProps) {
         {/* Couple names */}
         <motion.div
           {...fadeInScale(0.15)}
-          className="flex justify-center items-center gap-2 sm:gap-3 flex-wrap px-2"
+          className="flex justify-center items-center gap-2 sm:gap-3 flex-wrap px-2 text-center"
         >
-          <motion.h1
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            viewport={{ once: true }}
-            className="text-center font-light text-neutral-800"
-            style={{
-              fontFamily: "var(--font-names)",
-              fontSize: "clamp(1.5rem, 4vw, 2.8rem)",
-              lineHeight: 1.1,
-              letterSpacing: "0.05em",
-              fontWeight: 300,
-            }}
-          >
-            {bride}
-          </motion.h1>
-          <span className="text-neutral-400 text-lg sm:text-2xl">&</span>
-          <motion.h1
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            viewport={{ once: true }}
-            className="text-center font-light text-neutral-800"
-            style={{
-              fontFamily: "var(--font-names)",
-              fontSize: "clamp(1.5rem, 4vw, 2.8rem)",
-              lineHeight: 1.1,
-              letterSpacing: "0.05em",
-              fontWeight: 300,
-            }}
-          >
-            {groom}
-          </motion.h1>
+          {isSingleLine ? (
+            <>
+              <motion.h1
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                viewport={{ once: true }}
+                className="font-light text-neutral-800"
+                style={{
+                  fontFamily: "var(--font-names)",
+                  fontSize: "clamp(1.5rem, 4vw, 2.8rem)",
+                  lineHeight: 1.1,
+                  letterSpacing: "0.05em",
+                  fontWeight: 300,
+                }}
+              >
+                {bride}
+              </motion.h1>
+              <span className="text-neutral-400 text-lg sm:text-2xl">&</span>
+              <motion.h1
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                viewport={{ once: true }}
+                className="font-light text-neutral-800"
+                style={{
+                  fontFamily: "var(--font-names)",
+                  fontSize: "clamp(1.5rem, 4vw, 2.8rem)",
+                  lineHeight: 1.1,
+                  letterSpacing: "0.05em",
+                  fontWeight: 300,
+                }}
+              >
+                {groom}
+              </motion.h1>
+            </>
+          ) : (
+            // 3 dòng: bride / & / groom
+            <>
+              <motion.h1
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                viewport={{ once: true }}
+                className="w-full font-light text-neutral-800"
+                style={{
+                  fontFamily: "var(--font-names)",
+                  fontSize: "clamp(1.5rem, 4vw, 2.8rem)",
+                  lineHeight: 1.1,
+                  letterSpacing: "0.05em",
+                  fontWeight: 300,
+                }}
+              >
+                {bride}
+              </motion.h1>
+              <span className="w-full text-center text-neutral-400 text-lg sm:text-2xl">
+                &
+              </span>
+              <motion.h1
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                viewport={{ once: true }}
+                className="w-full font-light text-neutral-800"
+                style={{
+                  fontFamily: "var(--font-names)",
+                  fontSize: "clamp(1.5rem, 4vw, 2.8rem)",
+                  lineHeight: 1.1,
+                  letterSpacing: "0.05em",
+                  fontWeight: 300,
+                }}
+              >
+                {groom}
+              </motion.h1>
+            </>
+          )}
         </motion.div>
 
         {/* Decorative Line */}
