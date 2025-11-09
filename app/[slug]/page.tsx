@@ -7,6 +7,7 @@ import { WeddingPageProps } from "@/types/wedding";
 import WeddingPageView from "@/components/WeddingPageView";
 import LoadingOverlay from "@/components/LoadingOverlay";
 import NotFoundPage from "../not-found";
+import { MIN_LOADING_TIME } from "@/constants/loading";
 
 export default function WeddingPage() {
   const pathname = usePathname();
@@ -23,9 +24,17 @@ export default function WeddingPage() {
 
     let cancelled = false;
 
-    const fetchWedding = async () => {
+    const fetchWeddingWithDelay = async () => {
       try {
-        const wedding = await getWedding(slug);
+        const fetchPromise = getWedding(slug);
+        const delayPromise = new Promise((resolve) =>
+          setTimeout(resolve, MIN_LOADING_TIME)
+        );
+
+        const wedding = await Promise.all([fetchPromise, delayPromise]).then(
+          ([wedding]) => wedding
+        );
+
         if (!cancelled) setData(wedding);
       } catch (err) {
         console.error("Lỗi khi fetch wedding:", err);
@@ -35,13 +44,12 @@ export default function WeddingPage() {
       }
     };
 
-    fetchWedding();
+    fetchWeddingWithDelay();
 
     return () => {
       cancelled = true;
     };
   }, [slug]);
-
   if (!slug) return <NotFoundPage />;
 
   if (loading) return <LoadingOverlay show={true} />;

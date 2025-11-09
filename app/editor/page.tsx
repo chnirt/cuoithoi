@@ -12,6 +12,7 @@ import { WeddingPageProps } from "@/types/wedding";
 import { fetchWeddingByUserId } from "@/lib/firestore/weddings";
 import LoadingOverlay from "@/components/LoadingOverlay";
 import ShareDialog from "@/components/ShareDialog";
+import { MIN_LOADING_TIME } from "@/constants/loading";
 
 export default function EditorPage() {
   const { isLoaded, isSignedIn, user } = useUser();
@@ -31,8 +32,20 @@ export default function EditorPage() {
     let cancelled = false;
 
     const fetchWedding = async () => {
+      setLoading(true);
       try {
-        const data = await fetchWeddingByUserId(user.id);
+        const dataPromise = fetchWeddingByUserId(user.id);
+
+        // Tạo promise delay 2 giây
+        const delayPromise = new Promise((resolve) =>
+          setTimeout(resolve, MIN_LOADING_TIME)
+        );
+
+        // Chờ cả 2 promise xong
+        const data = await Promise.all([dataPromise, delayPromise]).then(
+          ([data]) => data
+        );
+
         if (!cancelled && data) {
           form.reset(data);
           if (data.slug) setSlug(data.slug);
@@ -40,7 +53,7 @@ export default function EditorPage() {
       } catch (err) {
         console.error(err);
       } finally {
-        if (!cancelled) setLoading(false); // chỉ setState sau async
+        if (!cancelled) setLoading(false);
       }
     };
 
@@ -51,11 +64,12 @@ export default function EditorPage() {
     };
   }, [isLoaded, isSignedIn, user, form]);
 
+  if (!isLoaded || loading) return <LoadingOverlay show={true} />;
+
   return (
     <div className="min-h-screen bg-neutral-100 relative">
       {/* Loading Overlay */}
-      <LoadingOverlay show={!isLoaded || loading || submitting} />
-
+      <LoadingOverlay show={submitting} />
       <header className="bg-white border-b border-neutral-200 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 py-6 flex justify-between items-center">
           <div>

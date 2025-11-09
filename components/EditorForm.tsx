@@ -25,6 +25,7 @@ import { saveWedding } from "@/lib/firestore/weddings";
 import { useUser } from "@clerk/nextjs";
 import { motion } from "framer-motion";
 import { fadeInScale } from "@/lib/animations";
+import { MIN_LOADING_TIME } from "@/constants/loading";
 
 interface EditorFormProps {
   onSubmittingChange?: (submitting: boolean) => void;
@@ -40,11 +41,21 @@ export default function EditorForm({
 
   const onSubmit = async (values: WeddingPageProps) => {
     if (!user?.id) return;
+
+    onSubmittingChange?.(true); // báo parent đang submit
+
     try {
-      onSubmittingChange?.(true); // báo parent đang submit
-      const slug = await saveWedding({ ...values, userId: user.id });
+      const savePromise = saveWedding({ ...values, userId: user.id });
+      const minDelay = new Promise((resolve) => setTimeout(resolve, MIN_LOADING_TIME));
+
+      // Chờ cả 2 promise xong
+      const slug = await Promise.all([savePromise, minDelay]).then(
+        ([slug]) => slug
+      );
+
       toast.success("Thông tin đã được cập nhật!");
       onSaved?.(slug);
+
       return slug;
     } catch (error) {
       console.error("Error saving wedding:", error);

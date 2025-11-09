@@ -12,7 +12,7 @@ export default function LoadingOverlay({ show }: LoadingOverlayProps) {
   if (!show) return null;
 
   return (
-    <div className="absolute inset-0 flex items-center justify-center z-60 bg-white bg-opacity-70">
+    <div className="fixed inset-0 z-60 bg-opacity-70 flex items-center justify-center">
       <Lottie animationData={loadingAnimation} loop className="w-40 h-40" />
     </div>
   );
