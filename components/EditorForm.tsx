@@ -26,6 +26,7 @@ import { useUser } from "@clerk/nextjs";
 import { motion } from "framer-motion";
 import { fadeInScale } from "@/lib/animations";
 import { MIN_LOADING_TIME } from "@/constants/loading";
+import { GalleryEditor } from "./GalleryEditor";
 
 interface EditorFormProps {
   onSubmittingChange?: (submitting: boolean) => void;
@@ -46,7 +47,9 @@ export default function EditorForm({
 
     try {
       const savePromise = saveWedding({ ...values, userId: user.id });
-      const minDelay = new Promise((resolve) => setTimeout(resolve, MIN_LOADING_TIME));
+      const minDelay = new Promise((resolve) =>
+        setTimeout(resolve, MIN_LOADING_TIME)
+      );
 
       // Chờ cả 2 promise xong
       const slug = await Promise.all([savePromise, minDelay]).then(
@@ -276,6 +279,20 @@ export default function EditorForm({
               <FormMessage />
             </FormItem>
           )}
+        />
+
+        {/* Bộ Sưu Tập Ảnh */}
+        <h2
+          className="text-2xl font-semibold text-neutral-900 mb-4 mt-10"
+          style={{ fontFamily: "var(--font-heading)" }}
+        >
+          Bộ Sưu Tập Ảnh
+        </h2>
+
+        <FormField
+          control={form.control}
+          name="gallery"
+          render={({ field }) => <GalleryEditor field={field} />}
         />
 
         {/* Buttons */}

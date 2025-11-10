@@ -1,14 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import { motion } from "framer-motion";
 import { defaultWeddingData } from "@/mock/defaultWeddingData";
 import type { GalleryProps } from "@/types/wedding";
-import {
-  fadeInUpVariant,
-  fadeInScaleVariant,
-  staggerContainer,
-} from "@/lib/animations";
+import { fadeInUpVariant, staggerContainer } from "@/lib/animations";
+import { SlideShowStyle } from "./SlideshowVideoStyle";
 
 export default function Gallery({ images }: GalleryProps) {
   const displayImages = images?.slice(0, 4) ?? [];
@@ -32,25 +28,8 @@ export default function Gallery({ images }: GalleryProps) {
         </motion.h2>
 
         {/* Gallery grid */}
-        <div className="grid grid-cols-2 gap-3 md:gap-4 mb-10">
-          {displayImages.map((image) => (
-            <motion.div
-              key={image.id}
-              variants={fadeInScaleVariant}
-              className="relative aspect-square overflow-hidden rounded-xl shadow-sm"
-            >
-              <Image
-                src={
-                  image.src ||
-                  "/placeholder.svg?height=400&width=400&query=wedding+photo"
-                }
-                alt={image.alt ?? "Ảnh cưới"}
-                fill
-                className="object-cover hover:scale-105 transition-transform duration-500 ease-out"
-                priority={true}
-              />
-            </motion.div>
-          ))}
+        <div className="mb-10 rounded-xl shadow-[0_4px_20px_rgba(185,162,127,0.12)] overflow-hidden">
+          <SlideShowStyle slides={displayImages} />
         </div>
 
         {/* Caption */}

@@ -65,8 +65,13 @@ export const metadata: Metadata = {
     images: ["/og-image.jpg"],
   },
   keywords: ["thiệp cưới", "thiệp cưới online", "thiệp mời", "cưới thôi"],
-  authors: [{ name: "Cưới Thôi Team" }],
+  authors: [{ name: "chnirt" }],
   metadataBase: new URL("https://cuoithoi.vercel.app"),
+  appleWebApp: {
+    title: "CuoiThoi",
+    capable: true,
+    statusBarStyle: "default",
+  },
 };
 
 export default function RootLayout({

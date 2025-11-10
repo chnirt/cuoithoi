@@ -57,36 +57,36 @@ export const defaultWeddingData = (() => {
         "© 2025 — Hành trình yêu thương tiếp tục, với sự bình yên và trọn vẹn",
     },
     gallery: [
-      {
-        id: 1,
-        src: "/placeholder.svg?height=400&width=400",
-        alt: "Engagement photo",
-      },
-      {
-        id: 2,
-        src: "/placeholder.svg?height=400&width=400",
-        alt: "Pre-wedding photoshoot",
-      },
-      {
-        id: 3,
-        src: "/placeholder.svg?height=400&width=400",
-        alt: "Romantic moment",
-      },
-      {
-        id: 4,
-        src: "/placeholder.svg?height=400&width=400",
-        alt: "Wedding day happiness",
-      },
-      {
-        id: 5,
-        src: "/placeholder.svg?height=400&width=400",
-        alt: "Celebration moment",
-      },
-      {
-        id: 6,
-        src: "/placeholder.svg?height=400&width=400",
-        alt: "Wedding portrait",
-      },
+      // {
+      //   id: 1,
+      //   src: "/placeholder.svg?height=400&width=400",
+      //   alt: "Engagement photo",
+      // },
+      // {
+      //   id: 2,
+      //   src: "/placeholder.svg?height=400&width=400",
+      //   alt: "Pre-wedding photoshoot",
+      // },
+      // {
+      //   id: 3,
+      //   src: "/placeholder.svg?height=400&width=400",
+      //   alt: "Romantic moment",
+      // },
+      // {
+      //   id: 4,
+      //   src: "/placeholder.svg?height=400&width=400",
+      //   alt: "Wedding day happiness",
+      // },
+      // {
+      //   id: 5,
+      //   src: "/placeholder.svg?height=400&width=400",
+      //   alt: "Celebration moment",
+      // },
+      // {
+      //   id: 6,
+      //   src: "/placeholder.svg?height=400&width=400",
+      //   alt: "Wedding portrait",
+      // },
     ],
   };
 })();
