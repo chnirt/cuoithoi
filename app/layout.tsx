@@ -47,14 +47,6 @@ export const metadata: Metadata = {
     description: "Thiệp cưới online siêu nhanh, siêu xinh, siêu dễ thương.",
     url: "https://cuoithoi.vercel.app",
     siteName: "Cưới Thôi",
-    images: [
-      {
-        url: "/og-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Cưới Thôi - Thiệp cưới online",
-      },
-    ],
     locale: "vi_VN",
     type: "website",
   },
@@ -62,7 +54,6 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Cưới Thôi",
     description: "Thiệp cưới online dễ thương, chia sẻ liền tay!",
-    images: ["/og-image.jpg"],
   },
   keywords: ["thiệp cưới", "thiệp cưới online", "thiệp mời", "cưới thôi"],
   authors: [{ name: "chnirt" }],
