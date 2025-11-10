@@ -27,6 +27,8 @@ import { motion } from "framer-motion";
 import { fadeInScale } from "@/lib/animations";
 import { MIN_LOADING_TIME } from "@/constants/loading";
 import { GalleryEditor } from "./GalleryEditor";
+import { useEffect } from "react";
+import { generateGoogleCalendarLink } from "@/lib/calendar";
 
 interface EditorFormProps {
   onSubmittingChange?: (submitting: boolean) => void;
@@ -72,6 +74,26 @@ export default function EditorForm({
     form.reset();
     toast("Đã đặt lại thông tin mặc định");
   };
+
+  useEffect(() => {
+    const subscription = form.watch((values) => {
+      const couple = {
+        bride: values.couple?.bride ?? "",
+        groom: values.couple?.groom ?? "",
+      };
+      const event = {
+        date: values.event?.date ?? "",
+        datetime: values.event?.datetime ?? "",
+        time: values.event?.time ?? "",
+        venue: values.event?.venue ?? "",
+        address: values.event?.address ?? "",
+      };
+
+      const link = generateGoogleCalendarLink({ couple, event });
+      form.setValue("event.calendarUrl", link);
+    });
+    return () => subscription.unsubscribe();
+  }, [form]);
 
   return (
     <Form {...form}>
@@ -264,21 +286,22 @@ export default function EditorForm({
         <FormField
           control={form.control}
           name="event.calendarUrl"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel className="text-base font-medium">
-                Liên Kết Lịch
-              </FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="https://calendar.google.com/..."
-                  className="h-11 text-base"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+          // render={({ field }) => (
+          //   <FormItem>
+          //     <FormLabel className="text-base font-medium">
+          //       Liên Kết Lịch
+          //     </FormLabel>
+          //     <FormControl>
+          //       <Input
+          //         placeholder="https://calendar.google.com/..."
+          //         className="h-11 text-base"
+          //         {...field}
+          //       />
+          //     </FormControl>
+          //     <FormMessage />
+          //   </FormItem>
+          // )}
+          render={({ field }) => <input type="hidden" {...field} />}
         />
 
         {/* Bộ Sưu Tập Ảnh */}
