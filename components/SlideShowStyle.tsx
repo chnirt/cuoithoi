@@ -67,7 +67,7 @@ export function SlideShowStyle({ slides }: SlideShowProps) {
             alt={slide.alt ?? `Slide ${i}`}
             fill
             className="object-cover w-full h-full"
-            sizes="100vw"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 1200px"
             style={{ objectPosition: "center" }}
             priority
           />

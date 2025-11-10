@@ -5,7 +5,6 @@ import { defaultWeddingData } from "@/mock/defaultWeddingData";
 import type { GalleryProps } from "@/types/wedding";
 import { fadeInUpVariant, staggerContainer } from "@/lib/animations";
 import { SlideShowStyle } from "./SlideShowStyle";
-// import { WeddingGallery } from "./WeddingGallery";
 
 export default function Gallery({ images }: GalleryProps) {
   const displayImages = images ?? [];
@@ -31,7 +30,6 @@ export default function Gallery({ images }: GalleryProps) {
         {/* Gallery grid */}
         <div className="mb-10 rounded-xl shadow-[0_4px_20px_rgba(185,162,127,0.12)] overflow-hidden">
           <SlideShowStyle slides={displayImages} />
-          {/* <WeddingGallery slides={displayImages}/> */}
         </div>
 
         {/* Caption */}

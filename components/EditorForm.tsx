@@ -1,6 +1,6 @@
 "use client";
 
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useWatch } from "react-hook-form";
 import {
   Form,
   FormField,
@@ -75,13 +75,13 @@ export default function EditorForm({
     toast("Đã đặt lại thông tin mặc định");
   };
 
-  const couple = form.watch("couple");
-  const event = form.watch("event");
+  const couple = useWatch({ control: form.control, name: "couple" });
+  const event = useWatch({ control: form.control, name: "event" });
 
   useEffect(() => {
     if (!couple || !event) return;
 
-    const link = generateGoogleCalendarLink({
+    const newUrl = generateGoogleCalendarLink({
       couple: {
         bride: couple.bride || "",
         groom: couple.groom || "",
@@ -95,9 +95,15 @@ export default function EditorForm({
       },
     });
 
-    form.setValue("event.calendarUrl", link);
-  }, [couple, event, form]);
-
+    // 🔍 Chỉ cập nhật nếu URL thay đổi thực sự
+    const currentUrl = form.getValues("event.calendarUrl");
+    if (currentUrl !== newUrl) {
+      form.setValue("event.calendarUrl", newUrl, {
+        shouldValidate: false,
+        shouldDirty: true,
+      });
+    }
+  }, [couple.bride, couple.groom, event.date, event.datetime, event.time, event.venue, event.address, form, couple, event]);
   return (
     <Form {...form}>
       <motion.form
