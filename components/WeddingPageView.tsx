@@ -16,12 +16,12 @@ export default function WeddingPageView({
 }: WeddingPageProps) {
   return (
     <main className="bg-white overflow-hidden">
-      <section id="countdown">
-        <Countdown targetDate={event.datetime} />
-      </section>
-
       <section id="hero">
         <Hero couple={couple} event={event} />
+      </section>
+
+      <section id="countdown">
+        <Countdown targetDate={event.datetime} />
       </section>
 
       <section id="invitation">

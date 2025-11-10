@@ -57,36 +57,42 @@ export const defaultWeddingData = (() => {
         "© 2025 — Hành trình yêu thương tiếp tục, với sự bình yên và trọn vẹn",
     },
     gallery: [
-      // {
-      //   id: 1,
-      //   src: "/placeholder.svg?height=400&width=400",
-      //   alt: "Engagement photo",
-      // },
-      // {
-      //   id: 2,
-      //   src: "/placeholder.svg?height=400&width=400",
-      //   alt: "Pre-wedding photoshoot",
-      // },
-      // {
-      //   id: 3,
-      //   src: "/placeholder.svg?height=400&width=400",
-      //   alt: "Romantic moment",
-      // },
-      // {
-      //   id: 4,
-      //   src: "/placeholder.svg?height=400&width=400",
-      //   alt: "Wedding day happiness",
-      // },
-      // {
-      //   id: 5,
-      //   src: "/placeholder.svg?height=400&width=400",
-      //   alt: "Celebration moment",
-      // },
-      // {
-      //   id: 6,
-      //   src: "/placeholder.svg?height=400&width=400",
-      //   alt: "Wedding portrait",
-      // },
+      {
+        id: 1,
+        // src: "/placeholder.svg?height=400&width=400",
+        src: "https://images.unsplash.com/photo-1519741497674-611481863552?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=4140",
+        alt: "Engagement photo",
+      },
+      {
+        id: 2,
+        // src: "/placeholder.svg?height=400&width=400",
+        src: "https://images.unsplash.com/photo-1529636798458-92182e662485?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2969",
+        alt: "Pre-wedding photoshoot",
+      },
+      {
+        id: 3,
+        // src: "/placeholder.svg?height=400&width=400",
+        src: "https://images.unsplash.com/photo-1520854221256-17451cc331bf?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2970",
+        alt: "Romantic moment",
+      },
+      {
+        id: 4,
+        // src: "/placeholder.svg?height=400&width=400",
+        src: "https://images.unsplash.com/photo-1606800052052-a08af7148866?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2970",
+        alt: "Wedding day happiness",
+      },
+      {
+        id: 5,
+        // src: "/placeholder.svg?height=400&width=400",
+        src: "https://images.unsplash.com/photo-1544592732-83bbbfc46783?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1374",
+        alt: "Celebration moment",
+      },
+      {
+        id: 6,
+        // src: "/placeholder.svg?height=400&width=400",
+        src: "https://images.unsplash.com/photo-1509927083803-4bd519298ac4?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2970",
+        alt: "Wedding portrait",
+      },
     ],
   };
 })();

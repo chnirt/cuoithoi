@@ -48,7 +48,7 @@ export function SlideShowStyle({ slides }: SlideShowProps) {
   return (
     <div
       ref={containerRef}
-      className="relative w-full bg-black overflow-hidden rounded-xl shadow-md"
+      className="relative w-full bg-black overflow-hidden rounded-xl"
       style={{
         aspectRatio: "16/9",
         height: isFullscreen ? "100vh" : "auto",
@@ -66,14 +66,14 @@ export function SlideShowStyle({ slides }: SlideShowProps) {
             src={slide.src}
             alt={slide.alt ?? `Slide ${i}`}
             fill
-            className="object-contain bg-black"
+            className="object-cover w-full h-full"
+            sizes="100vw"
             style={{ objectPosition: "center" }}
             priority
           />
         </div>
       ))}
 
-      {/* Fullscreen button */}
       <Button
         onClick={toggleFullscreen}
         size="icon"

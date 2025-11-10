@@ -4,10 +4,11 @@ import { motion } from "framer-motion";
 import { defaultWeddingData } from "@/mock/defaultWeddingData";
 import type { GalleryProps } from "@/types/wedding";
 import { fadeInUpVariant, staggerContainer } from "@/lib/animations";
-import { SlideShowStyle } from "./SlideshowVideoStyle";
+import { SlideShowStyle } from "./SlideShowStyle";
+// import { WeddingGallery } from "./WeddingGallery";
 
 export default function Gallery({ images }: GalleryProps) {
-  const displayImages = images?.slice(0, 4) ?? [];
+  const displayImages = images ?? [];
 
   return (
     <section className="py-16 px-4 md:py-24 bg-white">
@@ -30,6 +31,7 @@ export default function Gallery({ images }: GalleryProps) {
         {/* Gallery grid */}
         <div className="mb-10 rounded-xl shadow-[0_4px_20px_rgba(185,162,127,0.12)] overflow-hidden">
           <SlideShowStyle slides={displayImages} />
+          {/* <WeddingGallery slides={displayImages}/> */}
         </div>
 
         {/* Caption */}

@@ -29,8 +29,12 @@ export default function Footer() {
         {/* Main thank-you text */}
         <motion.p
           variants={fadeInUpVariant}
-          className="text-3xl md:text-4xl font-light"
-          style={{ color: "#8b7355", fontFamily: "Dancing Script, cursive" }}
+          className="text-3xl md:text-4xl font-light tracking-tight leading-snug"
+          style={{
+            color: "#8b7355",
+            fontFamily: "Playfair Display, serif",
+            letterSpacing: "0.5px",
+          }}
         >
           {defaultWeddingData.content.rsvpThankYou}
         </motion.p>

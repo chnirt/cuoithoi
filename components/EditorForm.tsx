@@ -75,25 +75,28 @@ export default function EditorForm({
     toast("Đã đặt lại thông tin mặc định");
   };
 
-  useEffect(() => {
-    const subscription = form.watch((values) => {
-      const couple = {
-        bride: values.couple?.bride ?? "",
-        groom: values.couple?.groom ?? "",
-      };
-      const event = {
-        date: values.event?.date ?? "",
-        datetime: values.event?.datetime ?? "",
-        time: values.event?.time ?? "",
-        venue: values.event?.venue ?? "",
-        address: values.event?.address ?? "",
-      };
+  const couple = form.watch("couple");
+  const event = form.watch("event");
 
-      const link = generateGoogleCalendarLink({ couple, event });
-      form.setValue("event.calendarUrl", link);
+  useEffect(() => {
+    if (!couple || !event) return;
+
+    const link = generateGoogleCalendarLink({
+      couple: {
+        bride: couple.bride || "",
+        groom: couple.groom || "",
+      },
+      event: {
+        date: event.date || "",
+        datetime: event.datetime || "",
+        time: event.time || "",
+        venue: event.venue || "",
+        address: event.address || "",
+      },
     });
-    return () => subscription.unsubscribe();
-  }, [form]);
+
+    form.setValue("event.calendarUrl", link);
+  }, [couple, event, form]);
 
   return (
     <Form {...form}>

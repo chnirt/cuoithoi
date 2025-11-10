@@ -2,6 +2,7 @@
 export interface CalendarEvent {
   couple: { bride: string; groom: string };
   event: {
+    date: string;
     datetime: string; // ISO string
     time: string; // "HH:mm"
     venue?: string;

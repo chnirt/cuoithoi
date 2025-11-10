@@ -5,6 +5,7 @@ import {
   Inter,
   Montserrat,
   Playfair_Display,
+  Great_Vibes,
 } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
@@ -34,6 +35,12 @@ const montserrat = Montserrat({
   subsets: ["latin"],
   variable: "--font-names",
   weight: ["300", "400", "500"],
+});
+
+const greatVibes = Great_Vibes({
+  subsets: ["latin"],
+  weight: "400", // Font này chỉ có 400
+  variable: "--font-greatvibes",
 });
 
 export const metadata: Metadata = {
@@ -73,7 +80,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${playfairDisplay.variable} ${inter.variable} ${montserrat.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${playfairDisplay.variable} ${inter.variable} ${montserrat.variable} ${greatVibes.variable} antialiased`}
       >
         <ClerkProvider>{children}</ClerkProvider>
         <Toaster />
