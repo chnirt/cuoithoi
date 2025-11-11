@@ -15,7 +15,9 @@ import { getCroppedImg } from "@/lib/crop";
 import { uploadToCloudinary } from "@/lib/cloudinary/upload";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -159,12 +161,15 @@ export function GalleryEditor({ field }: GalleryEditorProps) {
           open={!!cropModal}
           onOpenChange={(open) => !open && !loading && setCropModal(null)}
         >
-          <DialogContent className="max-w-[600px] w-full h-[450px]">
+          <DialogContent className="sm:max-w-[600px] w-full">
             <DialogHeader>
               <DialogTitle>Chỉnh ảnh 16/9</DialogTitle>
+              <DialogDescription>
+                Kéo và phóng to/thu nhỏ để chọn vùng ảnh mong muốn.
+              </DialogDescription>
             </DialogHeader>
 
-            <div className="relative w-full h-[300px] bg-black">
+            <div className="relative w-full h-[300px] bg-black my-4">
               <Cropper
                 image={cropModal.src}
                 crop={crop}
@@ -176,14 +181,12 @@ export function GalleryEditor({ field }: GalleryEditorProps) {
               />
             </div>
 
-            <DialogFooter className="mt-4 flex justify-end gap-2">
-              <Button
-                variant="secondary"
-                onClick={() => !loading && setCropModal(null)}
-                disabled={loading}
-              >
-                Huỷ
-              </Button>
+            <DialogFooter className="flex justify-end gap-2">
+              <DialogClose asChild>
+                <Button variant="secondary" disabled={loading}>
+                  Huỷ
+                </Button>
+              </DialogClose>
               <Button onClick={handleCropConfirm} disabled={loading}>
                 {loading ? "Đang tải..." : "Xác nhận"}
               </Button>
