@@ -98,18 +98,18 @@ export function GalleryEditor({ field }: GalleryEditorProps) {
     <FormItem>
       <FormLabel>Ảnh Cưới</FormLabel>
       <FormControl>
-        <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 mt-3">
+        <div className="grid grid-cols-2 gap-3 mt-3">
           {field.value?.map((img, idx) => (
             <div
               key={img.id}
-              className="relative w-full aspect-[16/9] rounded-xl overflow-hidden group border border-neutral-200 shadow-sm"
+              className="relative w-full aspect-[16/9] rounded-xl overflow-hidden shadow-sm"
             >
               <Image
                 src={img.src}
                 alt={img.alt || `Ảnh ${idx + 1}`}
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                className="object-cover transition-transform duration-300 group-hover:scale-105"
+                className="object-cover transition-transform duration-300"
                 style={{ objectPosition: "center" }}
               />
               <Button
@@ -117,9 +117,17 @@ export function GalleryEditor({ field }: GalleryEditorProps) {
                 size="icon"
                 variant="secondary"
                 onClick={() => handleRemoveImage(idx)}
-                className="absolute top-2 right-2 h-6 w-6 rounded-full bg-white/50 backdrop-blur-sm text-neutral-700 hover:bg-white/80 hover:text-neutral-900 transition-all opacity-0 group-hover:opacity-100"
+                className="
+      absolute top-1.5 right-1.5
+      h-5 w-5 sm:h-6 sm:w-6
+      rounded-full bg-white/60 backdrop-blur-sm text-neutral-700 
+      shadow-[0_0_4px_rgba(0,0,0,0.15)]
+      hover:bg-white/80 hover:text-neutral-900 
+      transition-all
+      opacity-100
+    "
               >
-                <X className="h-3 w-3" />
+                <X className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
               </Button>
             </div>
           ))}

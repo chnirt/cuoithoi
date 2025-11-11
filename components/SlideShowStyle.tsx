@@ -78,7 +78,8 @@ export function SlideShowStyle({ slides }: SlideShowProps) {
         onClick={toggleFullscreen}
         size="icon"
         variant="ghost"
-        className="absolute top-4 right-4 bg-black/40 text-white hover:text-white hover:bg-black/50 z-10 transition-all"
+        className="absolute top-4 right-4 bg-black/40 text-white hover:text-white hover:bg-black/50 z-10 transition-all
+             hidden lg:flex" // ẩn trên mobile, chỉ show từ md trở lên
       >
         {isFullscreen ? <Minimize2 size={20} /> : <Maximize2 size={20} />}
       </Button>
