@@ -34,6 +34,7 @@ interface GalleryEditorProps {
     value: GalleryImage[];
     onChange: (value: GalleryImage[]) => void;
   };
+  disabled?: boolean;
 }
 
 interface CroppedAreaPixels {
@@ -43,7 +44,7 @@ interface CroppedAreaPixels {
   height: number;
 }
 
-export function GalleryEditor({ field }: GalleryEditorProps) {
+export function GalleryEditor({ field, disabled }: GalleryEditorProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(false);
   const [cropModal, setCropModal] = useState<{
@@ -128,17 +129,28 @@ export function GalleryEditor({ field }: GalleryEditorProps) {
       transition-all
       opacity-100
     "
+                disabled={disabled}
               >
                 <X className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
               </Button>
             </div>
           ))}
 
-          <label className="aspect-[16/9] border-2 border-dashed rounded-xl flex flex-col items-center justify-center text-neutral-400 cursor-pointer hover:bg-neutral-50 transition">
+          <label
+            className={`aspect-[16/9] border-2 border-dashed rounded-xl flex flex-col items-center justify-center text-neutral-400 cursor-pointer transition
+    ${
+      disabled
+        ? "bg-transparent hover:bg-transparent cursor-not-allowed"
+        : "hover:bg-neutral-50"
+    }
+  `}
+          >
             {loading ? (
               <span className="text-sm">Đang tải...</span>
             ) : (
-              <span className="text-sm">+ Thêm ảnh</span>
+              <span className="text-sm">
+                {disabled ? "Không thể thêm ảnh" : "+ Thêm ảnh"}
+              </span>
             )}
             <input
               ref={fileInputRef}
@@ -146,6 +158,7 @@ export function GalleryEditor({ field }: GalleryEditorProps) {
               accept="image/*"
               hidden
               onChange={handleFileChange}
+              disabled={disabled}
             />
           </label>
         </div>
@@ -183,11 +196,14 @@ export function GalleryEditor({ field }: GalleryEditorProps) {
 
             <DialogFooter className="flex justify-end gap-2">
               <DialogClose asChild>
-                <Button variant="secondary" disabled={loading}>
+                <Button variant="secondary" disabled={loading || disabled}>
                   Huỷ
                 </Button>
               </DialogClose>
-              <Button onClick={handleCropConfirm} disabled={loading}>
+              <Button
+                onClick={handleCropConfirm}
+                disabled={loading || disabled}
+              >
                 {loading ? "Đang tải..." : "Xác nhận"}
               </Button>
             </DialogFooter>

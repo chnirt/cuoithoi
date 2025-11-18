@@ -29,6 +29,7 @@ import { MIN_LOADING_TIME } from "@/constants/loading";
 import { GalleryEditor } from "./GalleryEditor";
 import { useEffect } from "react";
 import { generateGoogleCalendarLink } from "@/lib/calendar";
+import { vi } from "date-fns/locale";
 
 interface EditorFormProps {
   onSubmittingChange?: (submitting: boolean) => void;
@@ -78,6 +79,11 @@ export default function EditorForm({
   const couple = useWatch({ control: form.control, name: "couple" });
   const event = useWatch({ control: form.control, name: "event" });
 
+  const isPastWedding = event?.datetime
+    ? new Date(event.datetime).getTime() < new Date().getTime()
+    : false;
+  // const isPastWedding = true;
+
   useEffect(() => {
     if (!couple || !event) return;
 
@@ -103,7 +109,18 @@ export default function EditorForm({
         shouldDirty: true,
       });
     }
-  }, [couple.bride, couple.groom, event.date, event.datetime, event.time, event.venue, event.address, form, couple, event]);
+  }, [
+    couple.bride,
+    couple.groom,
+    event.date,
+    event.datetime,
+    event.time,
+    event.venue,
+    event.address,
+    form,
+    couple,
+    event,
+  ]);
   return (
     <Form {...form}>
       <motion.form
@@ -133,6 +150,7 @@ export default function EditorForm({
                   placeholder="Nhập tên cô dâu"
                   className="h-11 text-base"
                   {...field}
+                  disabled={isPastWedding}
                 />
               </FormControl>
               <FormMessage />
@@ -154,6 +172,7 @@ export default function EditorForm({
                   placeholder="Nhập tên chú rể"
                   className="h-11 text-base"
                   {...field}
+                  disabled={isPastWedding}
                 />
               </FormControl>
               <FormMessage />
@@ -185,6 +204,7 @@ export default function EditorForm({
                       <Button
                         variant="outline"
                         className="w-full justify-between h-11 text-base font-light"
+                        disabled={isPastWedding}
                       >
                         {field.value
                           ? format(new Date(field.value), "dd/MM/yyyy")
@@ -197,9 +217,25 @@ export default function EditorForm({
                     <Calendar
                       mode="single"
                       selected={field.value ? new Date(field.value) : undefined}
-                      onSelect={(date) =>
-                        field.onChange(date?.toISOString() || "")
-                      }
+                      onSelect={(date) => {
+                        if (!date) return;
+
+                        const d = new Date(date); // lấy ngày mới từ calendar
+                        if (field.value) {
+                          const prev = new Date(field.value);
+                          // giữ giờ, phút, giây từ datetime cũ
+                          d.setHours(
+                            prev.getHours(),
+                            prev.getMinutes(),
+                            prev.getSeconds(),
+                            0
+                          );
+                        }
+
+                        field.onChange(d.toISOString());
+                      }}
+                      locale={vi}
+                      disabled={isPastWedding}
                     />
                   </PopoverContent>
                 </Popover>
@@ -210,7 +246,7 @@ export default function EditorForm({
 
           <FormField
             control={form.control}
-            name="event.time"
+            name="event.datetime"
             rules={{ required: "Thời gian không được để trống" }}
             render={({ field }) => (
               <FormItem>
@@ -220,10 +256,27 @@ export default function EditorForm({
                 <FormControl>
                   <Input
                     type="time"
-                    value={field.value || ""}
-                    onChange={field.onChange}
+                    value={
+                      field.value
+                        ? `${new Date(field.value)
+                            .getHours()
+                            .toString()
+                            .padStart(2, "0")}:${new Date(field.value)
+                            .getMinutes()
+                            .toString()
+                            .padStart(2, "0")}`
+                        : "11:11"
+                    }
+                    onChange={(e) => {
+                      if (!field.value) return;
+                      const d = new Date(field.value);
+                      const [h, m] = e.target.value.split(":").map(Number);
+                      d.setHours(h, m, 0, 0);
+                      field.onChange(d.toISOString());
+                    }}
                     step={60}
                     className="h-11 text-base bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden"
+                    disabled={isPastWedding}
                   />
                 </FormControl>
                 <FormMessage />
@@ -246,6 +299,7 @@ export default function EditorForm({
                   placeholder="VD: Nhà Hàng Tiệc Cưới"
                   className="h-11 text-base"
                   {...field}
+                  disabled={isPastWedding}
                 />
               </FormControl>
               <FormMessage />
@@ -265,6 +319,7 @@ export default function EditorForm({
                   placeholder="VD: 123 Đường Bất Kỳ, Thành Phố"
                   className="h-11 text-base"
                   {...field}
+                  disabled={isPastWedding}
                 />
               </FormControl>
               <FormMessage />
@@ -285,6 +340,7 @@ export default function EditorForm({
                   placeholder="https://maps.google.com/..."
                   className="h-11 text-base"
                   {...field}
+                  disabled={isPastWedding}
                 />
               </FormControl>
               <FormMessage />
@@ -324,7 +380,9 @@ export default function EditorForm({
         <FormField
           control={form.control}
           name="gallery"
-          render={({ field }) => <GalleryEditor field={field} />}
+          render={({ field }) => (
+            <GalleryEditor field={field} disabled={isPastWedding} />
+          )}
         />
 
         {/* Buttons */}
@@ -332,7 +390,7 @@ export default function EditorForm({
           <Button
             type="submit"
             className="flex-1 bg-[#b9a27f] hover:bg-[#a89370] h-11 text-base font-medium"
-            disabled={form.formState.isSubmitting}
+            disabled={form.formState.isSubmitting || isPastWedding}
           >
             {form.formState.isSubmitting ? "Đang lưu..." : "Lưu Thay Đổi"}
           </Button>
@@ -341,6 +399,7 @@ export default function EditorForm({
             type="button"
             onClick={handleReset}
             className="flex-1 h-11 text-base font-medium"
+            disabled={isPastWedding}
           >
             Đặt Lại
           </Button>

@@ -20,3 +20,15 @@ export function getUserIdFromSlug(slug: string) {
   const match = slug.match(/user_[A-Za-z0-9]+$/);
   return match ? match[0] : null;
 }
+
+/**
+ * Lấy "HH:mm" từ ISO datetime string
+ */
+export function getTimeStrFromISO(datetimeISO: string) {
+  const dateObj = new Date(datetimeISO);
+
+  const hours = dateObj.getHours().toString().padStart(2, "0");
+  const minutes = dateObj.getMinutes().toString().padStart(2, "0");
+
+  return `${hours}:${minutes}`;
+}

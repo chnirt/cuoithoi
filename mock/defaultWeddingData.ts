@@ -2,15 +2,17 @@ export const defaultWeddingData = (() => {
   const now = new Date();
   const nextMonth = new Date(now);
   nextMonth.setMonth(now.getMonth() + 1);
+  nextMonth.setHours(11, 11, 0, 0); // đặt giờ phút mặc định
+  const datetimeISO = nextMonth.toISOString();
 
   // Format date & datetime
-  const dateStr = nextMonth.toLocaleDateString("vi-VN", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  });
-  const datetimeISO = nextMonth.toISOString();
-  const timeStr = "11:00";
+  // const dateStr = nextMonth.toLocaleDateString("vi-VN", {
+  //   day: "2-digit",
+  //   month: "2-digit",
+  //   year: "numeric",
+  // });
+  // const datetimeISO = nextMonth.toISOString();
+  // const timeStr = "11:00";
 
   return {
     couple: {
@@ -18,9 +20,7 @@ export const defaultWeddingData = (() => {
       groom: "Chú Rể",
     },
     event: {
-      date: dateStr,
       datetime: datetimeISO,
-      time: timeStr,
       venue: "Nhà hàng Hạnh Phúc",
       address: "123 Đường Tình Yêu, Quận 1, TP. Hồ Chí Minh",
       mapUrl:

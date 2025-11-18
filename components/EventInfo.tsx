@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import DecorativeLine from "./DecorativeLine";
 import { fadeInUpVariant, staggerContainer } from "@/lib/animations";
 import { Button } from "./ui/button";
+import { getTimeStrFromISO } from "@/utils/wedding";
 
 export type EventInfoType = {
   date?: string | null;
@@ -23,14 +24,15 @@ interface EventInfoProps {
 }
 
 export default function EventInfo({ event }: EventInfoProps) {
-  if (!event) return null;
+  if (!event || !event.datetime) return null;
 
   let formattedDate = "";
+  let timeStr = "";
+
   try {
-    if (event.datetime) {
-      const eventDate = parseISO(event.datetime);
-      formattedDate = format(eventDate, "EEEE, dd/MM/yyyy", { locale: vi });
-    }
+    const eventDate = parseISO(event.datetime);
+    formattedDate = format(eventDate, "EEEE, dd/MM/yyyy", { locale: vi });
+    timeStr = getTimeStrFromISO(event.datetime);
   } catch {
     console.warn("Invalid date format:", event.datetime);
   }
@@ -70,14 +72,14 @@ export default function EventInfo({ event }: EventInfoProps) {
 
         {/* Time & Venue */}
         <div className="space-y-16 mb-16">
-          {event.time && formattedDate && (
+          {timeStr && formattedDate && (
             <motion.div variants={fadeInUpVariant}>
               <SectionLabel label="Thời gian" />
               <p
                 className="text-2xl md:text-2xl text-neutral-800 font-light mb-2"
                 style={{ fontFamily: "Playfair Display, serif" }}
               >
-                {event.time}
+                {timeStr}
               </p>
               <p
                 className="text-neutral-500 text-sm font-light"
