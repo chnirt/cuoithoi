@@ -30,17 +30,6 @@ import { GalleryEditor } from "./GalleryEditor";
 import { useEffect } from "react";
 import { generateGoogleCalendarLink } from "@/lib/calendar";
 import { vi } from "date-fns/locale";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "./ui/alert-dialog";
 
 interface EditorFormProps {
   onSubmittingChange?: (submitting: boolean) => void;
@@ -85,7 +74,7 @@ export default function EditorForm({
   };
 
   const handleReset = () => {
-    form.reset();
+    // form.reset();
     toast("Đã đặt lại thông tin mặc định");
     onResettingChange?.();
   };
@@ -93,10 +82,10 @@ export default function EditorForm({
   const couple = useWatch({ control: form.control, name: "couple" });
   const event = useWatch({ control: form.control, name: "event" });
 
-  const isPastWedding = event?.datetime
-    ? new Date(event.datetime).getTime() < new Date().getTime()
-    : false;
-  // const isPastWedding = true;
+  // const isPastWedding = event?.datetime
+  //   ? new Date(event.datetime).getTime() < new Date().getTime()
+  //   : false;
+  const isPastWedding = false;
 
   useEffect(() => {
     if (!couple || !event) return;
@@ -408,38 +397,15 @@ export default function EditorForm({
           >
             {form.formState.isSubmitting ? "Đang lưu..." : "Lưu Thay Đổi"}
           </Button>
-          <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button
-                variant="secondary"
-                type="button"
-                className="flex-1 h-11 text-base font-medium"
-                disabled={isPastWedding}
-              >
-                Đặt Lại
-              </Button>
-            </AlertDialogTrigger>
-
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Xác nhận đặt lại?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  Thao tác này sẽ xoá toàn bộ dữ liệu bạn đang nhập và không thể
-                  hoàn tác.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-
-              <AlertDialogFooter>
-                <AlertDialogCancel>Hủy</AlertDialogCancel>
-                <AlertDialogAction
-                  onClick={handleReset}
-                  className="bg-red-600 text-white hover:bg-red-700"
-                >
-                  Đặt Lại
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
+          <Button
+            variant="secondary"
+            type="button"
+            onClick={handleReset}
+            className="flex-1 h-11 text-base font-medium"
+            disabled={isPastWedding}
+          >
+            Đặt Lại
+          </Button>
         </div>
       </motion.form>
     </Form>

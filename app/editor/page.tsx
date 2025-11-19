@@ -25,6 +25,12 @@ export default function EditorPage() {
   const [submitting, setSubmitting] = useState(false);
   const [activeTab, setActiveTab] = useState<"editor" | "preview">("editor");
   const [slug, setSlug] = useState<string | null>(null);
+  const [serverDefault, setServerDefault] = useState<
+    | (WeddingPageProps & {
+        slug?: string;
+      })
+    | null
+  >(null);
 
   useEffect(() => {
     if (!isLoaded || !isSignedIn || !user?.id) return;
@@ -47,6 +53,7 @@ export default function EditorPage() {
         );
 
         if (!cancelled && data) {
+          setServerDefault(data);
           form.reset(data);
           if (data.slug) setSlug(data.slug);
         }
@@ -65,8 +72,10 @@ export default function EditorPage() {
   }, [isLoaded, isSignedIn, user, form]);
 
   const onResettingChange = useCallback(() => {
-    form.reset(defaultWeddingData);
-  }, [form]);
+    if (serverDefault) {
+      form.reset(serverDefault);
+    }
+  }, [form, serverDefault]);
 
   if (!isLoaded || loading) return <LoadingOverlay show={true} />;
 
