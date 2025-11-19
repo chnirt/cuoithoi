@@ -8,12 +8,41 @@ import Gallery from "./Gallery";
 import EventInfo from "./EventInfo";
 // import RSVPForm from "./RSVPForm";
 import Footer from "./Footer";
+import WeddingAnniversary from "./AnniversaryCounter";
+import AnniversaryHero from "./AnniversaryHero";
+import WishesSection from "./WishesSection";
 
 export default function WeddingPageView({
   couple,
   event,
   gallery,
 }: WeddingPageProps) {
+  const isPastWedding = event?.datetime
+    ? new Date(event.datetime).getTime() < new Date().getTime()
+    : false;
+
+  if (isPastWedding) {
+    return (
+      <main className="bg-white overflow-hidden">
+        <section id="hero">
+          <AnniversaryHero couple={couple} weddingDate={event.datetime} />
+        </section>
+
+        <section id="celebration">
+          <WeddingAnniversary weddingDate={event.datetime} />
+        </section>
+
+        <section id="wishes">
+          <WishesSection />
+        </section>
+
+        <section id="gallery">
+          <Gallery images={gallery} />
+        </section>
+      </main>
+    );
+  }
+
   return (
     <main className="bg-white overflow-hidden">
       <section id="hero">

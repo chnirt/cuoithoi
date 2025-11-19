@@ -82,10 +82,10 @@ export default function EditorForm({
   const couple = useWatch({ control: form.control, name: "couple" });
   const event = useWatch({ control: form.control, name: "event" });
 
-  // const isPastWedding = event?.datetime
-  //   ? new Date(event.datetime).getTime() < new Date().getTime()
-  //   : false;
-  const isPastWedding = false;
+  const isPastWedding = event?.datetime
+    ? new Date(event.datetime).getTime() < new Date().getTime()
+    : false;
+  // const isPastWedding = false;
 
   useEffect(() => {
     if (!couple || !event) return;
