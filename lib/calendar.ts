@@ -11,24 +11,24 @@ export interface CalendarEvent {
 }
 
 export function generateGoogleCalendarLink({ couple, event }: CalendarEvent) {
-  if (!couple || !event?.datetime || !event?.time) return "";
+  if (!couple || !event?.datetime) return "";
 
-  const [hour, minute] = event.time.split(":").map(Number);
-  const date = new Date(event.datetime);
-  date.setHours(hour, minute, 0, 0);
+  const startDate = new Date(event.datetime);
+  const endDate = new Date(startDate.getTime() + 3 * 60 * 60 * 1000); // 3 giờ sau
 
   const pad = (n: number) => n.toString().padStart(2, "0");
-  const y = date.getUTCFullYear();
-  const m = pad(date.getUTCMonth() + 1);
-  const d = pad(date.getUTCDate());
-  const h = pad(date.getUTCHours());
-  const min = pad(date.getUTCMinutes());
-  const start = `${y}${m}${d}T${h}${min}00Z`;
 
-  const endDate = new Date(date.getTime() + 3 * 60 * 60 * 1000); // 3 giờ
-  const eh = pad(endDate.getUTCHours());
-  const emin = pad(endDate.getUTCMinutes());
-  const end = `${y}${m}${d}T${eh}${emin}00Z`;
+  const formatDate = (date: Date) => {
+    const y = date.getUTCFullYear();
+    const m = pad(date.getUTCMonth() + 1);
+    const d = pad(date.getUTCDate());
+    const h = pad(date.getUTCHours());
+    const min = pad(date.getUTCMinutes());
+    return `${y}${m}${d}T${h}${min}00Z`;
+  };
+
+  const start = formatDate(startDate);
+  const end = formatDate(endDate);
 
   const text = encodeURIComponent(
     `Wedding of ${couple.bride} & ${couple.groom}`
