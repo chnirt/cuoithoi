@@ -30,15 +30,28 @@ import { GalleryEditor } from "./GalleryEditor";
 import { useEffect } from "react";
 import { generateGoogleCalendarLink } from "@/lib/calendar";
 import { vi } from "date-fns/locale";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "./ui/alert-dialog";
 
 interface EditorFormProps {
   onSubmittingChange?: (submitting: boolean) => void;
   onSaved?: (slug: string) => void;
+  onResettingChange?: () => void;
 }
 
 export default function EditorForm({
   onSubmittingChange,
   onSaved,
+  onResettingChange,
 }: EditorFormProps) {
   const { user } = useUser();
   const form = useFormContext<WeddingPageProps>();
@@ -74,6 +87,7 @@ export default function EditorForm({
   const handleReset = () => {
     form.reset();
     toast("Đã đặt lại thông tin mặc định");
+    onResettingChange?.();
   };
 
   const couple = useWatch({ control: form.control, name: "couple" });
@@ -394,15 +408,38 @@ export default function EditorForm({
           >
             {form.formState.isSubmitting ? "Đang lưu..." : "Lưu Thay Đổi"}
           </Button>
-          <Button
-            variant="secondary"
-            type="button"
-            onClick={handleReset}
-            className="flex-1 h-11 text-base font-medium"
-            disabled={isPastWedding}
-          >
-            Đặt Lại
-          </Button>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button
+                variant="secondary"
+                type="button"
+                className="flex-1 h-11 text-base font-medium"
+                disabled={isPastWedding}
+              >
+                Đặt Lại
+              </Button>
+            </AlertDialogTrigger>
+
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Xác nhận đặt lại?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Thao tác này sẽ xoá toàn bộ dữ liệu bạn đang nhập và không thể
+                  hoàn tác.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+
+              <AlertDialogFooter>
+                <AlertDialogCancel>Hủy</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={handleReset}
+                  className="bg-red-600 text-white hover:bg-red-700"
+                >
+                  Đặt Lại
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
       </motion.form>
     </Form>

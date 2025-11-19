@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import EditorForm from "@/components/EditorForm";
 import PreviewPanel from "@/components/PreviewPanel";
 import { SignedIn, UserButton, useUser } from "@clerk/nextjs";
@@ -64,6 +64,10 @@ export default function EditorPage() {
     };
   }, [isLoaded, isSignedIn, user, form]);
 
+  const onResettingChange = useCallback(() => {
+    form.reset(defaultWeddingData);
+  }, [form]);
+
   if (!isLoaded || loading) return <LoadingOverlay show={true} />;
 
   return (
@@ -116,6 +120,7 @@ export default function EditorPage() {
                 <EditorForm
                   onSubmittingChange={setSubmitting}
                   onSaved={(slug) => setSlug(slug)}
+                  onResettingChange={onResettingChange}
                 />
               </div>
             </div>
